@@ -31,6 +31,7 @@ log "Starting $BKP_DB_TYPE backup"
 if [ "$BKP_DB_TYPE" = "postgres" ]; then
 
   FILE="$BACKUP_DIR/${BKP_DB_NAME}_${TIMESTAMP}.dump"
+  EXTENSION="dump"
 
   export PGPASSWORD="$BKP_DB_PASSWORD"
 
@@ -46,6 +47,7 @@ if [ "$BKP_DB_TYPE" = "postgres" ]; then
 elif [ "$BKP_DB_TYPE" = "mongo" ]; then
 
   FILE="$BACKUP_DIR/${BKP_DB_NAME}_${TIMESTAMP}.gz"
+  EXTENSION="gz"
 
   if [ -n "${BKP_MONGO_URI:-}" ]; then
 
@@ -72,7 +74,7 @@ else
   exit 1
 fi
 
-S3_PATH="s3://${BKP_S3_BUCKET}/${BKP_S3_PREFIX}/${BKP_DB_NAME}/${TIMESTAMP}.gz"
+S3_PATH="s3://${BKP_S3_BUCKET}/${BKP_S3_PREFIX}/${BKP_DB_NAME}/${TIMESTAMP}.${EXTENSION}"
 
 log "Uploading backup"
 
