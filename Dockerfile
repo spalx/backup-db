@@ -12,8 +12,14 @@ RUN apk add --no-cache \
     coreutils
 
 # Install supercronic
-RUN curl -L https://github.com/aptible/supercronic/releases/latest/download/supercronic-linux-amd64 \
-    -o /usr/local/bin/supercronic \
+RUN ARCH=$(uname -m) \
+    && case "$ARCH" in \
+         x86_64) SC_ARCH=amd64 ;; \
+         aarch64) SC_ARCH=arm64 ;; \
+         *) echo "unsupported arch: $ARCH" && exit 1 ;; \
+       esac \
+    && curl -L "https://github.com/aptible/supercronic/releases/latest/download/supercronic-linux-${SC_ARCH}" \
+       -o /usr/local/bin/supercronic \
     && chmod +x /usr/local/bin/supercronic
 
 WORKDIR /app
