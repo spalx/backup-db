@@ -2,8 +2,6 @@
 # Builds and pushes ghcr.io/spalx/db-backup:<version> for linux/amd64 and linux/arm64, then tags the commit.
 #
 #   ./publish.sh 1.3
-#
-# Always both platforms in one buildx run. A single-platform push left 1.2 without amd64.
 set -euo pipefail
 
 IMAGE="ghcr.io/spalx/db-backup"
